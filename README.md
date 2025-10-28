@@ -6,12 +6,17 @@ Sistema de gestión de blog completo con soporte multiidioma, SEO automático y 
 
 ## 🚀 Estado del Proyecto
 
-✅ **Revisión post-merge completada** (Oct 28, 2025)
-- Correcciones aplicadas después del merge del commit `feat(users): add users and roles entities`
-- AppModule corregido (eliminadas duplicaciones)
-- Entidades User y Role actualizadas con campos faltantes
-- Tests unitarios funcionando: 45/45 tests pasando
-- Build exitoso sin errores de compilación
+**Versión**: 0.0.1  
+**Estado**: ✅ Funcionando completamente  
+**Servidor**: http://localhost:3000/api  
+
+Para ver el historial completo de cambios, consulta el [CHANGELOG.md](./CHANGELOG.md).
+
+### Quick Start
+```bash
+npm install
+npm run start:dev
+```
 
 ## Características
 
@@ -80,12 +85,28 @@ npm run start:prod
 - `GET /api/tags?lang=es` - Listar tags por idioma
 - `POST /api/tags` - Crear tag
 
+## 🗄️ Base de Datos
+
+El proyecto utiliza **PGlite** (PostgreSQL embebido) para máxima portabilidad:
+- ✅ No requiere instalación de PostgreSQL
+- ✅ Base de datos incluida en el proyecto  
+- ✅ Setup inmediato para desarrollo local
+
+> Para detalles técnicos de configuración, consulta [CHANGELOG.md](./CHANGELOG.md) y [docs/PGLITE_ANALYSIS.md](./docs/PGLITE_ANALYSIS.md)
+
 ## Usuario por Defecto
 ```
 Email: admin@example.com
 Password: admin123
 Roles: [Admin]
 ```
+
+## 📚 Documentación
+
+- **[CHANGELOG.md](./CHANGELOG.md)** - Historial completo de cambios y versiones
+- **[docs/PGLITE_ANALYSIS.md](./docs/PGLITE_ANALYSIS.md)** - Análisis técnico de configuración PGlite
+- **[postman/README.md](./postman/README.md)** - Guía de testing con Postman
+- **[postman/TEST_DATA.md](./postman/TEST_DATA.md)** - Datos de prueba para APIs
 
 ## Autor
 
