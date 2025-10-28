@@ -13,6 +13,7 @@ import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ArticleStatus } from '../common/enums';
+import { Public } from '../auth/decorators/public.decorator';
 
 @Controller('articles')
 export class ArticlesController {
@@ -39,11 +40,13 @@ export class ArticlesController {
   }
 
   @Get('published')
+  @Public()
   findPublished(@Query('lang') languageCode?: string) {
     return this.articlesService.findPublished(languageCode);
   }
 
   @Get('slug/:slug')
+  @Public()
   findBySlug(
     @Param('slug') slug: string,
     @Query('lang') languageCode?: string,

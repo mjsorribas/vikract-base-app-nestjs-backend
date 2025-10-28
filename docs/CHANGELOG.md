@@ -7,6 +7,40 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ## [Unreleased]
 
+## [0.1.0] - 2025-10-28
+
+### Added
+- **🔐 JWT Authentication System**: Sistema completo de autenticación con JWT
+  - Endpoints de registro y login (`/api/auth/register`, `/api/auth/login`)
+  - JWT Strategy con Passport para validación de tokens
+  - Tokens JWT con expiración de 24 horas
+  - Perfil de usuario autenticado (`/api/auth/profile`)
+
+- **🔑 API Keys Management**: Gestión avanzada de API Keys en base de datos
+  - Tabla `api_keys` con campos: token hash, nombre, expiración, último uso, scopes
+  - Endpoints CRUD para gestión de API Keys (`/api/api-keys/*`)
+  - Validación dual: JWT estándar + API Keys con hash SHA-256
+  - Revocación individual de tokens y auditoría completa
+  - Scopes personalizados para permisos granulares
+
+- **🛡️ Security Enhancements**: Mejoras de seguridad integral
+  - JWT Guard global con protección automática de endpoints
+  - Decorador `@Public()` para endpoints que no requieren autenticación
+  - Endpoints públicos: artículos publicados y consulta por slug
+  - Hash SHA-256 para tokens API Keys en base de datos
+  - Validación de expiración y desactivación de tokens
+
+### Security
+- **JWT Secret**: Configuración de clave secreta para firma de tokens
+- **Password Hashing**: Uso de bcryptjs para hash seguro de contraseñas
+- **Token Validation**: Validación robusta con soporte para Bearer tokens
+- **API Rate Protection**: Base preparada para limitación de requests
+
+### Dependencies
+- **@nestjs/jwt**: v10.2.0 - Gestión de JWT tokens
+- **passport-jwt**: v4.0.1 - Strategy de autenticación JWT
+- **@types/passport-jwt**: v3.0.13 - Tipos TypeScript para passport-jwt
+
 ## [0.0.1] - 2025-10-28
 
 ### Added

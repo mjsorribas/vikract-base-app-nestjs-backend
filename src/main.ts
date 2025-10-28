@@ -21,10 +21,23 @@ async function bootstrap() {
   // Set global prefix
   app.setGlobalPrefix('api');
 
+  // Simple health endpoint
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.get('/api', (req, res) => {
+    res.json({ 
+      message: 'Vikract NestJS Backend API',
+      version: '0.0.1',
+      status: 'OK',
+      timestamp: new Date().toISOString(),
+      authentication: 'JWT + API Keys',
+    });
+  });
+
   const port = process.env.PORT || 3000;
   await app.listen(port);
   
   console.log(`🚀 Application is running on: http://localhost:${port}/api`);
+  console.log(`🔐 JWT Authentication enabled`);
   console.log(`📖 Blog Backend with PGlite database initialized`);
 }
 

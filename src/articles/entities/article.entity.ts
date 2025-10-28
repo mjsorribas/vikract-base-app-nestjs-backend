@@ -15,7 +15,6 @@ import { User } from '../../users/entities/user.entity';
 import { Category } from '../../categories/entities/category.entity';
 import { Tag } from '../../tags/entities/tag.entity';
 import { ArticleTranslation } from './article-translation.entity';
-import { ArticleStatus } from '../../common/enums';
 import { IsNotEmpty } from 'class-validator';
 
 @Entity('articles')
@@ -28,11 +27,10 @@ export class Article {
   slug: string;
 
   @Column({
-    type: 'enum',
-    enum: ArticleStatus,
-    default: ArticleStatus.DRAFT,
+    type: 'varchar',
+    default: 'draft',
   })
-  status: ArticleStatus;
+  status: string;
 
   @Column({ nullable: true })
   featuredImage: string;

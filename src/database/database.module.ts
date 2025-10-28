@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PGlite } from '@electric-sql/pglite';
 
 // Import entities
 import { User } from '../users/entities/user.entity';
@@ -13,7 +12,9 @@ import { Language } from '../languages/entities/language.entity';
 import { ArticleTranslation } from '../articles/entities/article-translation.entity';
 import { CategoryTranslation } from '../categories/entities/category-translation.entity';
 import { TagTranslation } from '../tags/entities/tag-translation.entity';
+import { ApiKey } from '../api-keys/entities/api-key.entity';
 import { SeedService } from './seed.service';
+import { PGliteService } from './pglite.service';
 import { RolesModule } from '../roles/roles.module';
 import { LanguagesModule } from '../languages/languages.module';
 import { UsersModule } from '../users/users.module';
@@ -29,16 +30,18 @@ const entities = [
   ArticleTranslation,
   CategoryTranslation,
   TagTranslation,
+  ApiKey,
 ];
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       useFactory: async () => {
-        // For now, use sqlite until PGlite configuration is fixed
+        // Use better-sqlite3 for TypeORM compatibility
+        // PGlite will be available through PGliteService for advanced operations
         return {
-          type: 'sqlite',
-          database: ':memory:',
+          type: 'better-sqlite3',
+          database: './pglite_db/database.sqlite',
           entities,
           synchronize: true,
           logging: process.env.NODE_ENV === 'development',
@@ -49,6 +52,7 @@ const entities = [
     LanguagesModule,
     UsersModule,
   ],
-  providers: [SeedService],
+  providers: [SeedService, PGliteService],
+  exports: [PGliteService],
 })
 export class DatabaseModule {}
