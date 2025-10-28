@@ -2,7 +2,8 @@
 /dist
 /node_modules
 /build
-
+/pglite_db
+.yarn/
 # Logs
 logs
 *.log
