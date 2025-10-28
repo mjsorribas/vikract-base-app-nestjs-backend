@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsArray, ArrayNotEmpty } from 'class-validator';
 
 export class CreateRoleDto {
   @IsNotEmpty()
@@ -6,4 +6,8 @@ export class CreateRoleDto {
 
   @IsOptional()
   description?: string;
+
+  @IsArray()
+  @ArrayNotEmpty()
+  permissions: string[];
 }

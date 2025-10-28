@@ -10,9 +10,6 @@ import { BlogsModule } from './blogs/blogs.module';
 import { ArticlesModule } from './articles/articles.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TagsModule } from './tags/tags.module';
-import { RolesService } from './roles/roles.service';
-import { RolesController } from './roles/roles.controller';
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -25,7 +22,7 @@ import { RolesController } from './roles/roles.controller';
     CategoriesModule,
     TagsModule,
   ],
-  controllers: [AppController, RolesController],
-  providers: [AppService, RolesService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

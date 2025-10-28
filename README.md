@@ -4,6 +4,15 @@ Sistema de gestión de blog completo con soporte multiidioma, SEO automático y 
 
 -[Vikract NestJS Backend](https://github.com/mjsorribas/vikract-base-app-nestjs-backend) is a based on Nest framework TypeScript starter repository.
 
+## 🚀 Estado del Proyecto
+
+✅ **Revisión post-merge completada** (Oct 28, 2025)
+- Correcciones aplicadas después del merge del commit `feat(users): add users and roles entities`
+- AppModule corregido (eliminadas duplicaciones)
+- Entidades User y Role actualizadas con campos faltantes
+- Tests unitarios funcionando: 45/45 tests pasando
+- Build exitoso sin errores de compilación
+
 ## Características
 
 - **Gestión de Usuarios y Roles**: Admin, Author, Editor, Translator

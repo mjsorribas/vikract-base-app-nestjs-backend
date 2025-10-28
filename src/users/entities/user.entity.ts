@@ -28,11 +28,18 @@ export class User {
   @IsNotEmpty()
   lastName: string;
 
+  @Column({ unique: true })
+  @IsNotEmpty()
+  username: string;
+
   @Column()
   password: string;
 
   @Column({ default: true })
   isActive: boolean;
+
+  @Column({ default: false })
+  isEmailVerified: boolean;
 
   @ManyToMany(() => Role)
   @JoinTable({

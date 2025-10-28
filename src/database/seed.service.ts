@@ -61,6 +61,7 @@ export class SeedService implements OnModuleInit {
         email: adminEmail,
         firstName: 'Admin',
         lastName: 'User',
+        username: 'admin',
         password: 'admin123', // Change this in production
         roleIds: adminRole ? [adminRole.id] : [],
       });

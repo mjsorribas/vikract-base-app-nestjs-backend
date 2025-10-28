@@ -80,7 +80,10 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^slug$": "<rootDir>/../__mocks__/slug.js"
+    }
   },
   "packageManager": "yarn@4.10.3"
 }
