@@ -15,6 +15,9 @@ import { TagTranslation } from '../tags/entities/tag-translation.entity';
 import { ApiKey } from '../api-keys/entities/api-key.entity';
 import { Carousel } from '../carousels/entities/carousel.entity';
 import { CarouselSlide } from '../carousels/entities/carousel-slide.entity';
+import { ProductCategory } from '../product-categories/entities/product-category.entity';
+import { Product } from '../products/entities/product.entity';
+import { ProductMedia } from '../products/entities/product-media.entity';
 import { SeedService } from './seed.service';
 import { PGliteService } from './pglite.service';
 import { RolesModule } from '../roles/roles.module';
@@ -35,6 +38,9 @@ const entities = [
   ApiKey,
   Carousel,
   CarouselSlide,
+  ProductCategory,
+  Product,
+  ProductMedia,
 ];
 
 @Module({

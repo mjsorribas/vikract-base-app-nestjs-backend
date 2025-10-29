@@ -14,6 +14,8 @@ import { AuthModule } from './auth/auth.module';
 import { ApiKeysModule } from './api-keys/api-keys.module';
 import { StorageModule } from './storage/storage.module';
 import { CarouselsModule } from './carousels/carousels.module';
+import { ProductCategoriesModule } from './product-categories/product-categories.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { CarouselsModule } from './carousels/carousels.module';
     TagsModule,
     StorageModule,
     CarouselsModule,
+    ProductCategoriesModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
