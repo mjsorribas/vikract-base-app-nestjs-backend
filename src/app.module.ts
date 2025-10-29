@@ -16,6 +16,7 @@ import { StorageModule } from './storage/storage.module';
 import { CarouselsModule } from './carousels/carousels.module';
 import { ProductCategoriesModule } from './product-categories/product-categories.module';
 import { ProductsModule } from './products/products.module';
+import { BrandsModule } from './brands/brands.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ProductsModule } from './products/products.module';
     CarouselsModule,
     ProductCategoriesModule,
     ProductsModule,
+    BrandsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -6,11 +6,12 @@ import { PublicProductsController } from './controllers/public-products.controll
 import { Product } from './entities/product.entity';
 import { ProductMedia } from './entities/product-media.entity';
 import { ProductCategory } from '../product-categories/entities/product-category.entity';
+import { Brand } from '../brands/entities/brand.entity';
 import { ApiKeysModule } from '../api-keys/api-keys.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Product, ProductMedia, ProductCategory]),
+    TypeOrmModule.forFeature([Product, ProductMedia, ProductCategory, Brand]),
     ApiKeysModule,
   ],
   controllers: [AdminProductsController, PublicProductsController],

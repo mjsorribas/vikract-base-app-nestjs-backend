@@ -93,6 +93,9 @@ export class CreateProductDto {
   categoryId: string;
 
   @IsOptional()
+  brandId?: string;
+
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateProductMediaDto)

@@ -36,6 +36,14 @@ export class PublicProductsController {
     return this.productsService.findPublicByCategory(categoryId);
   }
 
+  @Get('brand/:brandId')
+  @ApiOperation({ summary: 'Get products by brand (public)' })
+  @ApiResponse({ status: 200, description: 'List of products by brand' })
+  @ApiParam({ name: 'brandId', description: 'Brand ID' })
+  findByBrand(@Param('brandId') brandId: string) {
+    return this.productsService.findPublicByBrand(brandId);
+  }
+
   @Get('slug/:slug')
   @ApiOperation({ summary: 'Get product by slug (public)' })
   @ApiResponse({ status: 200, description: 'Product found' })

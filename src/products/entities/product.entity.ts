@@ -9,6 +9,7 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 import { ProductCategory } from '../../product-categories/entities/product-category.entity';
+import { Brand } from '../../brands/entities/brand.entity';
 import { ProductMedia } from './product-media.entity';
 import {
   IsNotEmpty,
@@ -118,6 +119,9 @@ export class Product {
 
   @ManyToOne(() => ProductCategory, (category) => category.products)
   category: ProductCategory;
+
+  @ManyToOne(() => Brand, (brand) => brand.products, { nullable: true })
+  brand: Brand;
 
   @OneToMany(() => ProductMedia, (media) => media.product, {
     cascade: true,

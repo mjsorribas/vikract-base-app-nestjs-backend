@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { ProductMedia, MediaType } from './entities/product-media.entity';
 import { ProductCategory } from '../product-categories/entities/product-category.entity';
+import { Brand } from '../brands/entities/brand.entity';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PublicProductDto } from './dto/public-product.dto';
@@ -17,6 +18,8 @@ export class ProductsService {
     private readonly mediaRepository: Repository<ProductMedia>,
     @InjectRepository(ProductCategory)
     private readonly categoryRepository: Repository<ProductCategory>,
+    @InjectRepository(Brand)
+    private readonly brandRepository: Repository<Brand>,
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
@@ -31,10 +34,25 @@ export class ProductsService {
       );
     }
 
+    // Verificar que la marca existe si se proporciona
+    let brand = null;
+    if (createProductDto.brandId) {
+      brand = await this.brandRepository.findOne({
+        where: { id: createProductDto.brandId },
+      });
+
+      if (!brand) {
+        throw new NotFoundException(
+          `Brand with ID ${createProductDto.brandId} not found`,
+        );
+      }
+    }
+
     // Crear el producto
     const product = this.productRepository.create({
       ...createProductDto,
       category,
+      brand,
       isOfferActive: createProductDto.isOfferActive ?? false,
       availableStock: createProductDto.availableStock ?? 0,
       stockLimit: createProductDto.stockLimit ?? 0,
@@ -73,7 +91,7 @@ export class ProductsService {
 
   async findAll(): Promise<Product[]> {
     return this.productRepository.find({
-      relations: ['category', 'media'],
+      relations: ['category', 'brand', 'media'],
       order: {
         createdAt: 'DESC',
         media: {
@@ -86,7 +104,7 @@ export class ProductsService {
   async findActive(): Promise<Product[]> {
     return this.productRepository.find({
       where: { isActive: true },
-      relations: ['category', 'media'],
+      relations: ['category', 'brand', 'media'],
       order: {
         createdAt: 'DESC',
         media: {
@@ -100,6 +118,7 @@ export class ProductsService {
     return this.productRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.brand', 'brand')
       .leftJoinAndSelect('product.media', 'media')
       .where('product.isActive = :isActive', { isActive: true })
       .andWhere('product.availableStock > product.stockLimit')
@@ -111,7 +130,20 @@ export class ProductsService {
   async findByCategory(categoryId: string): Promise<Product[]> {
     return this.productRepository.find({
       where: { category: { id: categoryId }, isActive: true },
-      relations: ['category', 'media'],
+      relations: ['category', 'brand', 'media'],
+      order: {
+        createdAt: 'DESC',
+        media: {
+          sortOrder: 'ASC',
+        },
+      },
+    });
+  }
+
+  async findByBrand(brandId: string): Promise<Product[]> {
+    return this.productRepository.find({
+      where: { brand: { id: brandId }, isActive: true },
+      relations: ['category', 'brand', 'media'],
       order: {
         createdAt: 'DESC',
         media: {
@@ -124,7 +156,7 @@ export class ProductsService {
   async findBySlug(slug: string): Promise<Product> {
     const product = await this.productRepository.findOne({
       where: { slug },
-      relations: ['category', 'media'],
+      relations: ['category', 'brand', 'media'],
       order: {
         media: {
           sortOrder: 'ASC',
@@ -142,7 +174,7 @@ export class ProductsService {
   async findOne(id: string): Promise<Product> {
     const product = await this.productRepository.findOne({
       where: { id },
-      relations: ['category', 'media'],
+      relations: ['category', 'brand', 'media'],
       order: {
         media: {
           sortOrder: 'ASC',
@@ -176,6 +208,26 @@ export class ProductsService {
       }
 
       product.category = category;
+    }
+
+    // Si se actualiza la marca, verificar que existe
+    if (updateProductDto.brandId !== undefined) {
+      if (updateProductDto.brandId) {
+        const brand = await this.brandRepository.findOne({
+          where: { id: updateProductDto.brandId },
+        });
+
+        if (!brand) {
+          throw new NotFoundException(
+            `Brand with ID ${updateProductDto.brandId} not found`,
+          );
+        }
+
+        product.brand = brand;
+      } else {
+        // Si brandId es null o undefined, remover la relación con la marca
+        product.brand = null;
+      }
     }
 
     // Actualizar propiedades del producto
@@ -239,6 +291,11 @@ export class ProductsService {
 
   async findPublicByCategory(categoryId: string): Promise<PublicProductDto[]> {
     const products = await this.findByCategory(categoryId);
+    return products.map((product) => this.toPublicDto(product));
+  }
+
+  async findPublicByBrand(brandId: string): Promise<PublicProductDto[]> {
+    const products = await this.findByBrand(brandId);
     return products.map((product) => this.toPublicDto(product));
   }
 

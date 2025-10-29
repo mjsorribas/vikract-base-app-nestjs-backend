@@ -18,6 +18,7 @@ describe('ProductCategoriesService', () => {
     isActive: true,
     sortOrder: 0,
     products: [],
+    brands: [],
     createdAt: new Date(),
     updatedAt: new Date(),
   };

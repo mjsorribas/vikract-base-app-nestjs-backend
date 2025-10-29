@@ -1,0 +1,2452 @@
+{
+  "info": {
+    "name": "Vikract NestJS Backend API",
+    "description": "Colección completa de endpoints para la API de Vikract NestJS Backend",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (responseCode.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('jwt_token', jsonData.access_token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Google OAuth",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auth",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth"]
+            }
+          }
+        },
+        {
+          "name": "Google OAuth Redirect",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/auth/google-redirect",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "google-redirect"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"newuser@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"roleId\": \"role-uuid\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "user-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Updated Name\",\n  \"lastName\": \"Updated LastName\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "user-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "user-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "item": [
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin\",\n  \"description\": \"Administrator role\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles"]
+            }
+          }
+        },
+        {
+          "name": "Get All Roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles"]
+            }
+          }
+        },
+        {
+          "name": "Get Role by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/roles/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "role-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Role",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/roles/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "role-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Role",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/roles/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "role-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Languages",
+      "item": [
+        {
+          "name": "Create Language",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"English\",\n  \"code\": \"en\",\n  \"flag\": \"🇺🇸\",\n  \"isActive\": true,\n  \"isDefault\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/languages",
+              "host": ["{{baseUrl}}"],
+              "path": ["languages"]
+            }
+          }
+        },
+        {
+          "name": "Get All Languages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/languages",
+              "host": ["{{baseUrl}}"],
+              "path": ["languages"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Languages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/languages/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["languages", "active"]
+            }
+          }
+        },
+        {
+          "name": "Get Default Language",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/languages/default",
+              "host": ["{{baseUrl}}"],
+              "path": ["languages", "default"]
+            }
+          }
+        },
+        {
+          "name": "Get Language by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/languages/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["languages", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "language-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Language",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isActive\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/languages/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["languages", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "language-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Language",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/languages/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["languages", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "language-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API Keys",
+      "item": [
+        {
+          "name": "Create API Key",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My API Key\",\n  \"permissions\": [\"read\", \"write\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api-keys",
+              "host": ["{{baseUrl}}"],
+              "path": ["api-keys"]
+            }
+          }
+        },
+        {
+          "name": "Get All API Keys",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api-keys",
+              "host": ["{{baseUrl}}"],
+              "path": ["api-keys"]
+            }
+          }
+        },
+        {
+          "name": "Get My API Keys",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api-keys/my-keys",
+              "host": ["{{baseUrl}}"],
+              "path": ["api-keys", "my-keys"]
+            }
+          }
+        },
+        {
+          "name": "Get API Key by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api-keys/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api-keys", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "api-key-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update API Key",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated API Key Name\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api-keys/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api-keys", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "api-key-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Deactivate API Key",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api-keys/:id/deactivate",
+              "host": ["{{baseUrl}}"],
+              "path": ["api-keys", ":id", "deactivate"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "api-key-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete API Key",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api-keys/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api-keys", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "api-key-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blogs",
+      "item": [
+        {
+          "name": "Create Blog",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My Blog\",\n  \"description\": \"This is my blog description\",\n  \"slug\": \"my-blog\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/blogs",
+              "host": ["{{baseUrl}}"],
+              "path": ["blogs"]
+            }
+          }
+        },
+        {
+          "name": "Get All Blogs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/blogs",
+              "host": ["{{baseUrl}}"],
+              "path": ["blogs"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Blogs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/blogs/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["blogs", "active"]
+            }
+          }
+        },
+        {
+          "name": "Get Blog by Slug",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/blogs/slug/:slug",
+              "host": ["{{baseUrl}}"],
+              "path": ["blogs", "slug", ":slug"],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "my-blog"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Blog by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/blogs/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["blogs", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "blog-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Blog",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Blog Title\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/blogs/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["blogs", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "blog-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Blog",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/blogs/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["blogs", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "blog-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "Create Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My Article\",\n  \"content\": \"This is the article content\",\n  \"slug\": \"my-article\",\n  \"excerpt\": \"Article excerpt\",\n  \"status\": \"published\",\n  \"blogId\": \"blog-uuid\",\n  \"authorId\": \"user-uuid\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/articles",
+              "host": ["{{baseUrl}}"],
+              "path": ["articles"]
+            }
+          }
+        },
+        {
+          "name": "Get All Articles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/articles?status=published&blogId=blog-uuid&authorId=user-uuid&lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["articles"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "published"
+                },
+                {
+                  "key": "blogId",
+                  "value": "blog-uuid"
+                },
+                {
+                  "key": "authorId",
+                  "value": "user-uuid"
+                },
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Published Articles",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/articles/published?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "published"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Article by Slug",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/articles/slug/:slug?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", "slug", ":slug"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "my-article"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Article by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/articles/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "article-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Article",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Article Title\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/articles/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "article-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Article",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/articles/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["articles", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "article-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Technology\",\n  \"slug\": \"technology\",\n  \"description\": \"Technology related articles\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
+          }
+        },
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categories?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Active Categories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/categories/active?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "active"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Category by Slug",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/categories/slug/:slug?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "slug", ":slug"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "technology"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categories/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "category-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "category-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categories/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "category-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Create Tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"JavaScript\",\n  \"slug\": \"javascript\",\n  \"description\": \"JavaScript programming\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tags",
+              "host": ["{{baseUrl}}"],
+              "path": ["tags"]
+            }
+          }
+        },
+        {
+          "name": "Get All Tags",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tags?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["tags"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Active Tags",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/tags/active?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["tags", "active"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Tag by Slug",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/tags/slug/:slug?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["tags", "slug", ":slug"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "javascript"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Tag by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tags/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["tags", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "tag-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Tag",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tags/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["tags", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "tag-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Tag",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tags/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["tags", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "tag-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Storage",
+      "item": [
+        {
+          "name": "Upload File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "blogId",
+                  "value": "blog-uuid",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/storage/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["storage", "upload"]
+            }
+          }
+        },
+        {
+          "name": "Get All Files",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/storage/files",
+              "host": ["{{baseUrl}}"],
+              "path": ["storage", "files"]
+            }
+          }
+        },
+        {
+          "name": "Get Files by Blog",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/storage/blog/:blogId/files",
+              "host": ["{{baseUrl}}"],
+              "path": ["storage", "blog", ":blogId", "files"],
+              "variable": [
+                {
+                  "key": "blogId",
+                  "value": "blog-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Files by User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/storage/user/:userId/files",
+              "host": ["{{baseUrl}}"],
+              "path": ["storage", "user", ":userId", "files"],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "user-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Files by Type",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/storage/type/:fileType/files",
+              "host": ["{{baseUrl}}"],
+              "path": ["storage", "type", ":fileType", "files"],
+              "variable": [
+                {
+                  "key": "fileType",
+                  "value": "image"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Storage Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/storage/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["storage", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Delete File",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/storage/files/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["storage", "files", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "file-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Carousels",
+      "item": [
+        {
+          "name": "Create Carousel",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Article Carousel\",\n  \"articleId\": \"article-uuid\",\n  \"isActive\": true,\n  \"sortOrder\": 0,\n  \"slides\": [\n    {\n      \"imageUrl\": \"https://example.com/image1.jpg\",\n      \"caption\": \"Slide 1\",\n      \"sortOrder\": 0\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carousels",
+              "host": ["{{baseUrl}}"],
+              "path": ["carousels"]
+            }
+          }
+        },
+        {
+          "name": "Get All Carousels",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/carousels?active=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["carousels"],
+              "query": [
+                {
+                  "key": "active",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Carousels by Article",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/carousels/article/:articleId",
+              "host": ["{{baseUrl}}"],
+              "path": ["carousels", "article", ":articleId"],
+              "variable": [
+                {
+                  "key": "articleId",
+                  "value": "article-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Carousel by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/carousels/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["carousels", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "carousel-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Carousel",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Carousel Title\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carousels/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["carousels", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "carousel-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Reorder Carousel",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sortOrder\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/carousels/:id/reorder",
+              "host": ["{{baseUrl}}"],
+              "path": ["carousels", ":id", "reorder"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "carousel-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Carousel",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/carousels/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["carousels", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "carousel-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Categories",
+      "item": [
+        {
+          "name": "Admin - Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Electronics\",\n  \"slug\": \"electronics\",\n  \"description\": \"Electronic products and devices\",\n  \"imageUrl\": \"https://example.com/electronics.jpg\",\n  \"isActive\": true,\n  \"sortOrder\": 0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/product-categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "product-categories"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/product-categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "product-categories"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Active Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/product-categories/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "product-categories", "active"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Category by Slug",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/product-categories/slug/:slug",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "product-categories", "slug", ":slug"],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "electronics"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/product-categories/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "product-categories", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "category-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Update Category",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/product-categories/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "product-categories", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "category-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/product-categories/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "product-categories", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "category-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Public - Get Active Categories",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
+          }
+        },
+        {
+          "name": "Public - Get Category by Slug",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/categories/slug/:slug",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "slug", ":slug"],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "electronics"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Public - Get Category by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/categories/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "category-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Admin - Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"iPhone 15 Pro\",\n  \"productCode\": \"APL-IP15P-128\",\n  \"slug\": \"iphone-15-pro\",\n  \"shortDescription\": \"El iPhone más avanzado\",\n  \"longDescription\": \"iPhone 15 Pro con chip A17 Pro y tecnología avanzada\",\n  \"salePrice\": 999.99,\n  \"offerPrice\": 899.99,\n  \"isOfferActive\": true,\n  \"purchasePrice\": 700.00,\n  \"availableStock\": 50,\n  \"stockLimit\": 5,\n  \"weight\": 0.187,\n  \"size\": \"6.1 pulgadas\",\n  \"hasShipping\": true,\n  \"hasPickup\": true,\n  \"isActive\": true,\n  \"categoryId\": \"category-uuid\",\n  \"brandId\": \"brand-uuid\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/products?active=true&inStock=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products"],
+              "query": [
+                {
+                  "key": "active",
+                  "value": "true"
+                },
+                {
+                  "key": "inStock",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Products by Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/products/category/:categoryId",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products", "category", ":categoryId"],
+              "variable": [
+                {
+                  "key": "categoryId",
+                  "value": "category-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Products by Brand",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/products/brand/:brandId",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products", "brand", ":brandId"],
+              "variable": [
+                {
+                  "key": "brandId",
+                  "value": "brand-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Product by Slug",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/products/slug/:slug",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products", "slug", ":slug"],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "iphone-15-pro"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "product-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Update Product",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"salePrice\": 949.99,\n  \"availableStock\": 45\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "product-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Update Product Stock",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock\": 100\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/products/:id/stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products", ":id", "stock"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "product-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "products", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "product-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Public - Get Available Products",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products?inStock=true",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                {
+                  "key": "inStock",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Public - Get Products by Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products/category/:categoryId",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "category", ":categoryId"],
+              "variable": [
+                {
+                  "key": "categoryId",
+                  "value": "category-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Public - Get Products by Brand",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products/brand/:brandId",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "brand", ":brandId"],
+              "variable": [
+                {
+                  "key": "brandId",
+                  "value": "brand-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Public - Get Product by Slug",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/products/slug/:slug",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "slug", ":slug"],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "iphone-15-pro"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Brands",
+      "item": [
+        {
+          "name": "Admin - Create Brand",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Apple\",\n  \"slug\": \"apple\",\n  \"description\": \"Technology company focused on consumer electronics\",\n  \"logoUrl\": \"https://example.com/apple-logo.png\",\n  \"websiteUrl\": \"https://apple.com\",\n  \"countryOfOrigin\": \"USA\",\n  \"foundedYear\": 1976,\n  \"isActive\": true,\n  \"sortOrder\": 1,\n  \"categoryIds\": [\"electronics-uuid\", \"smartphones-uuid\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/brands",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "brands"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get All Brands",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/brands",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "brands"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Brand by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/brands/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "brands", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "brand-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Update Brand",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated brand description\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/brands/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "brands", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "brand-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Delete Brand",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/brands/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "brands", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "brand-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Add Categories to Brand",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryIds\": [\"tablets-uuid\", \"computers-uuid\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/brands/:id/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "brands", ":id", "categories"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "brand-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Remove Categories from Brand",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryIds\": [\"tablets-uuid\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/brands/:id/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "brands", ":id", "categories"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "brand-uuid"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Public - Get Active Brands",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/public/brands",
+              "host": ["{{baseUrl}}"],
+              "path": ["public", "brands"]
+            }
+          }
+        },
+        {
+          "name": "Public - Get Brand by Slug",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/public/brands/:slug",
+              "host": ["{{baseUrl}}"],
+              "path": ["public", "brands", ":slug"],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "apple"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Public - Get Brands by Category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/public/brands/category/:categoryId",
+              "host": ["{{baseUrl}}"],
+              "path": ["public", "brands", "category", ":categoryId"],
+              "variable": [
+                {
+                  "key": "categoryId",
+                  "value": "category-uuid"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

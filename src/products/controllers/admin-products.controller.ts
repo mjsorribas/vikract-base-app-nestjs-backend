@@ -76,6 +76,16 @@ export class AdminProductsController {
     return this.productsService.findByCategory(categoryId);
   }
 
+  @Get('brand/:brandId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get products by brand' })
+  @ApiResponse({ status: 200, description: 'List of products by brand' })
+  @ApiParam({ name: 'brandId', description: 'Brand ID' })
+  findByBrand(@Param('brandId') brandId: string) {
+    return this.productsService.findByBrand(brandId);
+  }
+
   @Get('slug/:slug')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()

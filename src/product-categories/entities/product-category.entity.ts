@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToMany,
   DeleteDateColumn,
 } from 'typeorm';
 import { Product } from '../../products/entities/product.entity';
+import { Brand } from '../../brands/entities/brand.entity';
 import { IsNotEmpty, IsOptional, IsBoolean } from 'class-validator';
 
 @Entity('product_categories')
@@ -40,6 +42,9 @@ export class ProductCategory {
 
   @OneToMany(() => Product, (product) => product.category)
   products: Product[];
+
+  @ManyToMany(() => Brand, (brand) => brand.categories)
+  brands: Brand[];
 
   @CreateDateColumn()
   createdAt: Date;

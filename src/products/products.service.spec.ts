@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { ProductMedia } from './entities/product-media.entity';
 import { ProductCategory } from '../product-categories/entities/product-category.entity';
+import { Brand } from '../brands/entities/brand.entity';
 import { NotFoundException } from '@nestjs/common';
 
 describe('ProductsService', () => {
@@ -74,6 +75,10 @@ describe('ProductsService', () => {
     findOne: jest.fn(),
   };
 
+  const mockBrandRepository = {
+    findOne: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -89,6 +94,10 @@ describe('ProductsService', () => {
         {
           provide: getRepositoryToken(ProductCategory),
           useValue: mockCategoryRepository,
+        },
+        {
+          provide: getRepositoryToken(Brand),
+          useValue: mockBrandRepository,
         },
       ],
     }).compile();
@@ -177,7 +186,7 @@ describe('ProductsService', () => {
       const result = await service.findAll();
 
       expect(productRepository.find).toHaveBeenCalledWith({
-        relations: ['category', 'media'],
+        relations: ['category', 'brand', 'media'],
         order: {
           createdAt: 'DESC',
           media: {
@@ -197,7 +206,7 @@ describe('ProductsService', () => {
 
       expect(productRepository.find).toHaveBeenCalledWith({
         where: { isActive: true },
-        relations: ['category', 'media'],
+        relations: ['category', 'brand', 'media'],
         order: {
           createdAt: 'DESC',
           media: {
@@ -217,7 +226,7 @@ describe('ProductsService', () => {
 
       expect(productRepository.findOne).toHaveBeenCalledWith({
         where: { id: mockProduct.id },
-        relations: ['category', 'media'],
+        relations: ['category', 'brand', 'media'],
         order: {
           media: {
             sortOrder: 'ASC',
@@ -244,7 +253,7 @@ describe('ProductsService', () => {
 
       expect(productRepository.findOne).toHaveBeenCalledWith({
         where: { slug: 'test-product' },
-        relations: ['category', 'media'],
+        relations: ['category', 'brand', 'media'],
         order: {
           media: {
             sortOrder: 'ASC',
@@ -287,7 +296,7 @@ describe('ProductsService', () => {
 
       expect(productRepository.findOne).toHaveBeenCalledWith({
         where: { id: mockProduct.id },
-        relations: ['category', 'media'],
+        relations: ['category', 'brand', 'media'],
         order: {
           media: {
             sortOrder: 'ASC',
