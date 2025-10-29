@@ -9,6 +9,7 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 import { Article } from '../../articles/entities/article.entity';
+import { Page } from '../../pages/entities/page.entity';
 import { CarouselSlide } from './carousel-slide.entity';
 import { IsNotEmpty, IsOptional, IsBoolean } from 'class-validator';
 
@@ -42,6 +43,9 @@ export class Carousel {
 
   @ManyToOne(() => Article, { nullable: true, onDelete: 'SET NULL' })
   article: Article;
+
+  @ManyToOne(() => Page, { nullable: true, onDelete: 'SET NULL' })
+  page?: Page;
 
   @OneToMany(() => CarouselSlide, (slide) => slide.carousel, {
     cascade: true,

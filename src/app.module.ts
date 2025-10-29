@@ -17,6 +17,7 @@ import { CarouselsModule } from './carousels/carousels.module';
 import { ProductCategoriesModule } from './product-categories/product-categories.module';
 import { ProductsModule } from './products/products.module';
 import { BrandsModule } from './brands/brands.module';
+import { PagesModule } from './pages/pages.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { BrandsModule } from './brands/brands.module';
     ProductCategoriesModule,
     ProductsModule,
     BrandsModule,
+    PagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

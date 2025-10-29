@@ -23,6 +23,7 @@ describe('CarouselsService', () => {
     showNavigation: true,
     slides: [],
     article: null,
+    page: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
