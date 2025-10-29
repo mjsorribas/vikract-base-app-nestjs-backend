@@ -13,6 +13,8 @@ import { ArticleTranslation } from '../articles/entities/article-translation.ent
 import { CategoryTranslation } from '../categories/entities/category-translation.entity';
 import { TagTranslation } from '../tags/entities/tag-translation.entity';
 import { ApiKey } from '../api-keys/entities/api-key.entity';
+import { Carousel } from '../carousels/entities/carousel.entity';
+import { CarouselSlide } from '../carousels/entities/carousel-slide.entity';
 import { SeedService } from './seed.service';
 import { PGliteService } from './pglite.service';
 import { RolesModule } from '../roles/roles.module';
@@ -31,6 +33,8 @@ const entities = [
   CategoryTranslation,
   TagTranslation,
   ApiKey,
+  Carousel,
+  CarouselSlide,
 ];
 
 @Module({

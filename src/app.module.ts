@@ -12,6 +12,9 @@ import { CategoriesModule } from './categories/categories.module';
 import { TagsModule } from './tags/tags.module';
 import { AuthModule } from './auth/auth.module';
 import { ApiKeysModule } from './api-keys/api-keys.module';
+import { StorageModule } from './storage/storage.module';
+import { CarouselsModule } from './carousels/carousels.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -25,6 +28,8 @@ import { ApiKeysModule } from './api-keys/api-keys.module';
     ArticlesModule,
     CategoriesModule,
     TagsModule,
+    StorageModule,
+    CarouselsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
