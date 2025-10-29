@@ -51,7 +51,7 @@ export class Brand {
   @IsOptional()
   countryOfOrigin: string;
 
-  @Column({ type: 'year', nullable: true })
+  @Column({ type: 'integer', nullable: true })
   @IsOptional()
   foundedYear: number;
 

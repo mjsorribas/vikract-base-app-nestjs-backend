@@ -8,15 +8,17 @@ import {
   Delete,
   ParseUUIDPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { ArticleStatus } from '../common/enums';
-import { Public } from '../auth/decorators/public.decorator';
+import { JwtAuthGuard } from '../auths/jwt-auth.guard';
 
-@Controller('articles')
-export class ArticlesController {
+@Controller('admin/articles')
+@UseGuards(JwtAuthGuard)
+export class ArticlesAdminController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Post()
@@ -39,24 +41,17 @@ export class ArticlesController {
     });
   }
 
-  @Get('published')
-  @Public()
-  findPublished(@Query('lang') languageCode?: string) {
-    return this.articlesService.findPublished(languageCode);
+  @Get(':id')
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.articlesService.findOne(id);
   }
 
   @Get('slug/:slug')
-  @Public()
   findBySlug(
     @Param('slug') slug: string,
     @Query('lang') languageCode?: string,
   ) {
     return this.articlesService.findBySlug(slug, languageCode);
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.articlesService.findOne(id);
   }
 
   @Patch(':id')

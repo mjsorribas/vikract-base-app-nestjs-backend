@@ -7,13 +7,16 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { LanguagesService } from './languages.service';
 import { CreateLanguageDto } from './dto/create-language.dto';
 import { UpdateLanguageDto } from './dto/update-language.dto';
+import { JwtAuthGuard } from '../auths/jwt-auth.guard';
 
-@Controller('languages')
-export class LanguagesController {
+@Controller('admin/languages')
+@UseGuards(JwtAuthGuard)
+export class LanguagesAdminController {
   constructor(private readonly languagesService: LanguagesService) {}
 
   @Post()
@@ -24,16 +27,6 @@ export class LanguagesController {
   @Get()
   findAll() {
     return this.languagesService.findAll();
-  }
-
-  @Get('active')
-  findActive() {
-    return this.languagesService.findActive();
-  }
-
-  @Get('default')
-  findDefault() {
-    return this.languagesService.findDefault();
   }
 
   @Get(':id')

@@ -42,8 +42,8 @@ export class Page {
   slug: string;
 
   @Column({
-    type: 'enum',
-    enum: PageStatus,
+    type: 'varchar',
+    length: 20,
     default: PageStatus.DRAFT,
   })
   status: PageStatus;
@@ -79,10 +79,10 @@ export class Page {
   mainVideo: string;
 
   // Publishing Options
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   publishedAt: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   scheduledAt: Date;
 
   // Hierarchical Structure

@@ -19,6 +19,7 @@ import { ProductCategory } from '../product-categories/entities/product-category
 import { Product } from '../products/entities/product.entity';
 import { ProductMedia } from '../products/entities/product-media.entity';
 import { Brand } from '../brands/entities/brand.entity';
+import { Page } from '../pages/entities/page.entity';
 import { SeedService } from './seed.service';
 import { PGliteService } from './pglite.service';
 import { RolesModule } from '../roles/roles.module';
@@ -43,6 +44,7 @@ const entities = [
   Product,
   ProductMedia,
   Brand,
+  Page,
 ];
 
 @Module({

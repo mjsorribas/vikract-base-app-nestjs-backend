@@ -1,0 +1,1659 @@
+{
+	"info": {
+		"_postman_id": "vikract-blog-api-updated-collection",
+		"name": "Vikract Blog API - Admin/Public Separated v2.0",
+		"description": "Colección completa actualizada para todos los endpoints separados Admin/Público del API de blog con NestJS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "vikract-team"
+	},
+	"item": [
+		{
+			"name": "🔐 Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('access_token', response.access_token);",
+									"    pm.environment.set('userId', response.user.id);",
+									"    console.log('User registered and token saved');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"username\": \"testuser\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					}
+				},
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('access_token', response.access_token);",
+									"    pm.environment.set('userId', response.user.id);",
+									"    console.log('Admin logged in and token saved');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/auth/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"profile"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🔑 API Keys Management",
+			"item": [
+				{
+					"name": "Create API Key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    pm.environment.set('api_key', response.token);",
+									"    console.log('API Key created and saved');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Postman Testing Key\",\n  \"expiresAt\": \"2025-12-31T23:59:59.000Z\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api-keys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api-keys"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get My API Keys",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api-keys/my-keys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api-keys",
+								"my-keys"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "👤 Admin - Users Management",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"username\": \"johndoe\",\n  \"password\": \"securePassword123\",\n  \"roleIds\": [\"{{roleId}}\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{userId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Johnny\",\n  \"lastName\": \"Doe Updated\",\n  \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{userId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/users/{{userId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"users",
+								"{{userId}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🛡️ Admin - Roles Management",
+			"item": [
+				{
+					"name": "Get All Roles",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/roles",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"roles"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Role",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"editor\",\n  \"description\": \"Editor role for content management\",\n  \"permissions\": [\"read\", \"write\", \"edit\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/roles",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"roles"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🌐 Admin - Languages Management",
+			"item": [
+				{
+					"name": "Get All Languages (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/languages",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"languages"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Language",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"fr\",\n  \"name\": \"Français\",\n  \"isDefault\": false,\n  \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/languages",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"languages"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🌐 Public - Languages",
+			"item": [
+				{
+					"name": "Get Active Languages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/languages",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"languages"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📰 Admin - Blogs Management",
+			"item": [
+				{
+					"name": "Get All Blogs (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/blogs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"blogs"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Blog",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"My Technology Blog\",\n  \"description\": \"A blog about the latest technology trends and developments\",\n  \"ownerId\": \"{{userId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/blogs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"blogs"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📰 Public - Blogs",
+			"item": [
+				{
+					"name": "Get Active Blogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/blogs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Blog by Slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/blogs/{{blogSlug}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs",
+								"{{blogSlug}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📝 Admin - Articles Management",
+			"item": [
+				{
+					"name": "Get All Articles (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/articles",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"articles"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Article",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Introduction to NestJS\",\n  \"excerpt\": \"Learn the basics of NestJS framework\",\n  \"content\": \"NestJS is a progressive Node.js framework...\",\n  \"authorId\": \"{{userId}}\",\n  \"blogId\": \"{{blogId}}\",\n  \"categoryIds\": [\"{{categoryId}}\"],\n  \"tagIds\": [\"{{tagId}}\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/articles",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"articles"
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Article Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"published\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/articles/{{articleId}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"articles",
+								"{{articleId}}",
+								"status"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📝 Public - Articles",
+			"item": [
+				{
+					"name": "Get Published Articles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/articles",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"articles"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Article by Slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/articles/{{articleSlug}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"articles",
+								"{{articleSlug}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📁 Admin - Categories Management",
+			"item": [
+				{
+					"name": "Get All Categories (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"categories"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Technology\",\n  \"description\": \"Articles about technology and innovation\",\n  \"translations\": [\n    {\n      \"languageCode\": \"es\",\n      \"name\": \"Tecnología\",\n      \"description\": \"Artículos sobre tecnología e innovación\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"categories"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📁 Public - Categories",
+			"item": [
+				{
+					"name": "Get Active Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Category by Slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/categories/{{categorySlug}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories",
+								"{{categorySlug}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🏷️ Admin - Tags Management",
+			"item": [
+				{
+					"name": "Get All Tags (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/tags",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"tags"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Tag",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"JavaScript\",\n  \"description\": \"Articles related to JavaScript programming\",\n  \"translations\": [\n    {\n      \"languageCode\": \"es\",\n      \"name\": \"JavaScript\",\n      \"description\": \"Artículos relacionados con programación en JavaScript\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/tags",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"tags"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🏷️ Public - Tags",
+			"item": [
+				{
+					"name": "Get Active Tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tags",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tags"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Tag by Slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tags/{{tagSlug}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tags",
+								"{{tagSlug}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🎠 Admin - Carousels Management",
+			"item": [
+				{
+					"name": "Get All Carousels (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/carousels",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"carousels"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Carousel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Main Banner Carousel\",\n  \"description\": \"Homepage main carousel\",\n  \"articleId\": \"{{articleId}}\",\n  \"slides\": [\n    {\n      \"title\": \"Slide 1\",\n      \"description\": \"First slide description\",\n      \"imageUrl\": \"https://example.com/image1.jpg\",\n      \"order\": 1\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/carousels",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"carousels"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Carousels by Article",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/carousels/article/{{articleId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"carousels",
+								"article",
+								"{{articleId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Carousels by Page",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/carousels/page/{{pageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"carousels",
+								"page",
+								"{{pageId}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🎠 Public - Carousels",
+			"item": [
+				{
+					"name": "Get Active Carousels",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carousels",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carousels"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Carousels by Article (Public)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carousels/article/{{articleId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carousels",
+								"article",
+								"{{articleId}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Carousels by Page (Public)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/carousels/page/{{pageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carousels",
+								"page",
+								"{{pageId}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📄 Admin - Pages Management",
+			"item": [
+				{
+					"name": "Get All Pages (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/pages",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"pages"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Page",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"About Us\",\n  \"subtitle\": \"Learn more about our company\",\n  \"content\": \"<h1>About Our Company</h1><p>We are a technology company...</p>\",\n  \"status\": \"published\",\n  \"showInHomeMenu\": true,\n  \"menuOrder\": 1,\n  \"authorId\": \"{{userId}}\",\n  \"seoTitle\": \"About Us - Company Name\",\n  \"seoDescription\": \"Learn more about our company and mission\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/pages",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"pages"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Page Hierarchy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/pages/hierarchy",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"pages",
+								"hierarchy"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Menu Pages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/pages/menu/home",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"pages",
+								"menu",
+								"home"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📄 Public - Pages",
+			"item": [
+				{
+					"name": "Get Published Pages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pages",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pages"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Page by Slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pages/{{pageSlug}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pages",
+								"{{pageSlug}}"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Menu Pages (Public)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pages/menu/home",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pages",
+								"menu",
+								"home"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Root Pages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/pages/root",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"pages",
+								"root"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🏪 Admin - Brands Management",
+			"item": [
+				{
+					"name": "Get All Brands (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/brands",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"brands"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Brand",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Apple\",\n  \"description\": \"Technology company from Cupertino\",\n  \"logoUrl\": \"https://example.com/apple-logo.png\",\n  \"websiteUrl\": \"https://apple.com\",\n  \"countryOfOrigin\": \"United States\",\n  \"foundedYear\": 1976\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/brands",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"brands"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "🏪 Public - Brands",
+			"item": [
+				{
+					"name": "Get Active Brands",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/public/brands",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"brands"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Brand by Slug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/public/brands/{{brandSlug}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"public",
+								"brands",
+								"{{brandSlug}}"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "📂 Storage",
+			"item": [
+				{
+					"name": "Upload File",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/storage/upload",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"storage",
+								"upload"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Files",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/storage/files",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"storage",
+								"files"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api",
+			"type": "string"
+		},
+		{
+			"key": "adminEmail",
+			"value": "admin@example.com",
+			"type": "string"
+		},
+		{
+			"key": "adminPassword",
+			"value": "admin123",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "api_key",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "roleId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "languageId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "languageCode",
+			"value": "en",
+			"type": "string"
+		},
+		{
+			"key": "blogId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "blogSlug",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "articleId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "articleSlug",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "categoryId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "categorySlug",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "tagId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "tagSlug",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "carouselId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "pageId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "pageSlug",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "brandId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "brandSlug",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

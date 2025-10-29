@@ -12,7 +12,7 @@ import {
 import { CarouselsService } from './carousels.service';
 import { CreateCarouselDto } from './dto/create-carousel.dto';
 import { UpdateCarouselDto } from './dto/update-carousel.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auths/jwt-auth.guard';
 import {
   ApiTags,
   ApiOperation,
@@ -22,14 +22,14 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 
-@ApiTags('carousels')
-@Controller('carousels')
-export class CarouselsController {
+@ApiTags('admin-carousels')
+@Controller('admin/carousels')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+export class CarouselsAdminController {
   constructor(private readonly carouselsService: CarouselsService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Create a new carousel' })
   @ApiResponse({ status: 201, description: 'Carousel created successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
@@ -64,6 +64,17 @@ export class CarouselsController {
     return this.carouselsService.findByArticle(articleId);
   }
 
+  @Get('page/:pageId')
+  @ApiOperation({ summary: 'Get carousels by page ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of carousels for the page',
+  })
+  @ApiParam({ name: 'pageId', description: 'Page ID' })
+  findByPage(@Param('pageId') pageId: string) {
+    return this.carouselsService.findByPage(pageId);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get carousel by ID' })
   @ApiResponse({ status: 200, description: 'Carousel found' })
@@ -74,8 +85,6 @@ export class CarouselsController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Update carousel' })
   @ApiResponse({ status: 200, description: 'Carousel updated successfully' })
   @ApiResponse({ status: 404, description: 'Carousel not found' })
@@ -89,8 +98,6 @@ export class CarouselsController {
   }
 
   @Patch(':id/reorder')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Reorder slides in carousel' })
   @ApiResponse({ status: 200, description: 'Slides reordered successfully' })
   @ApiResponse({ status: 404, description: 'Carousel not found' })
@@ -104,8 +111,6 @@ export class CarouselsController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete carousel' })
   @ApiResponse({ status: 200, description: 'Carousel deleted successfully' })
   @ApiResponse({ status: 404, description: 'Carousel not found' })

@@ -1,8 +1,8 @@
 {
 	"info": {
 		"_postman_id": "vikract-blog-api-collection",
-		"name": "Vikract Blog API",
-		"description": "Colección completa para testear todos los endpoints del API de blog con NestJS",
+		"name": "Vikract Blog API - Admin/Public Separated",
+		"description": "Colección completa para testear todos los endpoints del API de blog con NestJS. Separación completa entre endpoints Admin (autenticados) y Públicos.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "vikract-team"
 	},
@@ -282,7 +282,7 @@
 			]
 		},
 		{
-			"name": "Roles",
+			"name": "👤 Admin - Roles Management",
 			"item": [
 				{
 					"name": "Get All Roles",
@@ -300,15 +300,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/roles",
+							"raw": "{{baseUrl}}/admin/roles",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"roles"
 							]
 						},
-						"description": "Obtener todos los roles disponibles"
+						"description": "Obtener todos los roles disponibles (Solo Admin)"
 					}
 				},
 				{
@@ -336,15 +337,16 @@
 							"raw": "{\n  \"name\": \"editor\",\n  \"description\": \"Editor role for content management\",\n  \"permissions\": [\"read\", \"write\", \"edit\"]\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/roles",
+							"raw": "{{baseUrl}}/admin/roles",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"roles"
 							]
 						},
-						"description": "Crear un nuevo rol"
+						"description": "Crear un nuevo rol (Solo Admin)"
 					}
 				},
 				{
@@ -363,21 +365,32 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/roles/{{roleId}}",
+							"raw": "{{baseUrl}}/admin/roles/{{roleId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"roles",
 								"{{roleId}}"
 							]
 						},
-						"description": "Obtener un rol específico por su ID"
+						"description": "Obtener un rol específico por su ID (Solo Admin)"
 					}
 				},
 				{
 					"name": "Update Role",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [
 							{
@@ -390,40 +403,52 @@
 							"raw": "{\n  \"description\": \"Updated editor role description\",\n  \"permissions\": [\"read\", \"write\", \"edit\", \"publish\"]\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/roles/{{roleId}}",
+							"raw": "{{baseUrl}}/admin/roles/{{roleId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"roles",
 								"{{roleId}}"
 							]
 						},
-						"description": "Actualizar un rol existente"
+						"description": "Actualizar un rol existente (Solo Admin)"
 					}
 				},
 				{
 					"name": "Delete Role",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/roles/{{roleId}}",
+							"raw": "{{baseUrl}}/admin/roles/{{roleId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"roles",
 								"{{roleId}}"
 							]
 						},
-						"description": "Eliminar un rol (soft delete)"
+						"description": "Eliminar un rol (Solo Admin)"
 					}
 				}
 			]
 		},
 		{
-			"name": "Users",
+			"name": "👤 Admin - Users Management",
 			"item": [
 				{
 					"name": "Get All Users",
@@ -441,15 +466,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/users",
+							"raw": "{{baseUrl}}/admin/users",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"users"
 							]
 						},
-						"description": "Obtener todos los usuarios"
+						"description": "Obtener todos los usuarios (Solo Admin)"
 					}
 				},
 				{
@@ -477,15 +503,16 @@
 							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"username\": \"johndoe\",\n  \"password\": \"securePassword123\",\n  \"roleIds\": [\"{{roleId}}\"]\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users",
+							"raw": "{{baseUrl}}/admin/users",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"users"
 							]
 						},
-						"description": "Crear un nuevo usuario"
+						"description": "Crear un nuevo usuario (Solo Admin)"
 					}
 				},
 				{
@@ -504,16 +531,17 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/users/{{userId}}",
+							"raw": "{{baseUrl}}/admin/users/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"users",
 								"{{userId}}"
 							]
 						},
-						"description": "Obtener un usuario específico por su ID"
+						"description": "Obtener un usuario específico por su ID (Solo Admin)"
 					}
 				},
 				{
@@ -541,16 +569,17 @@
 							"raw": "{\n  \"firstName\": \"Johnny\",\n  \"lastName\": \"Doe Updated\",\n  \"isActive\": true\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/{{userId}}",
+							"raw": "{{baseUrl}}/admin/users/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"users",
 								"{{userId}}"
 							]
 						},
-						"description": "Actualizar un usuario existente"
+						"description": "Actualizar un usuario existente (Solo Admin)"
 					}
 				},
 				{
@@ -569,172 +598,26 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/users/{{userId}}",
+							"raw": "{{baseUrl}}/admin/users/{{userId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"users",
 								"{{userId}}"
 							]
 						},
-						"description": "Eliminar un usuario (soft delete)"
+						"description": "Eliminar un usuario (Solo Admin)"
 					}
 				}
 			]
 		},
 		{
-			"name": "Languages",
+			"name": "🌐 Admin - Languages Management",
 			"item": [
 				{
-					"name": "Get All Languages",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/languages",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"languages"
-							]
-						},
-						"description": "Obtener todos los idiomas"
-					}
-				},
-				{
-					"name": "Get Active Languages",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/languages/active",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"languages",
-								"active"
-							]
-						},
-						"description": "Obtener solo los idiomas activos"
-					}
-				},
-				{
-					"name": "Get Default Language",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/languages/default",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"languages",
-								"default"
-							]
-						},
-						"description": "Obtener el idioma por defecto"
-					}
-				},
-				{
-					"name": "Create Language",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"code\": \"fr\",\n  \"name\": \"Français\",\n  \"isDefault\": false,\n  \"isActive\": true\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/languages",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"languages"
-							]
-						},
-						"description": "Crear un nuevo idioma"
-					}
-				},
-				{
-					"name": "Get Language by ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/languages/{{languageId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"languages",
-								"{{languageId}}"
-							]
-						},
-						"description": "Obtener un idioma específico por su ID"
-					}
-				},
-				{
-					"name": "Update Language",
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Français (France)\",\n  \"isActive\": false\n}"
-						},
-						"url": {
-							"raw": "{{baseUrl}}/languages/{{languageId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"languages",
-								"{{languageId}}"
-							]
-						},
-						"description": "Actualizar un idioma existente"
-					}
-				},
-				{
-					"name": "Delete Language",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/languages/{{languageId}}",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"languages",
-								"{{languageId}}"
-							]
-						},
-						"description": "Eliminar un idioma (soft delete)"
-					}
-				}
-			]
-		},
-		{
-			"name": "Blogs",
-			"item": [
-				{
-					"name": "Get All Blogs",
+					"name": "Get All Languages (Admin)",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -749,33 +632,222 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/blogs",
+							"raw": "{{baseUrl}}/admin/languages",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"blogs"
+								"admin",
+								"languages"
 							]
 						},
-						"description": "Obtener todos los blogs"
+						"description": "Obtener todos los idiomas (incluyendo inactivos) - Solo Admin"
 					}
 				},
 				{
-					"name": "Get Active Blogs",
+					"name": "Create Language",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"fr\",\n  \"name\": \"Français\",\n  \"isDefault\": false,\n  \"isActive\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/languages",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"languages"
+							]
+						},
+						"description": "Crear un nuevo idioma - Solo Admin"
+					}
+				},
+				{
+					"name": "Get Language by ID (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/languages/{{languageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"languages",
+								"{{languageId}}"
+							]
+						},
+						"description": "Obtener un idioma específico por su ID - Solo Admin"
+					}
+				},
+				{
+					"name": "Update Language",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Français (France)\",\n  \"isActive\": false\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/languages/{{languageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"languages",
+								"{{languageId}}"
+							]
+						},
+						"description": "Actualizar un idioma existente - Solo Admin"
+					}
+				},
+				{
+					"name": "Delete Language",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/languages/{{languageId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"languages",
+								"{{languageId}}"
+							]
+						},
+						"description": "Eliminar un idioma - Solo Admin"
+					}
+				}
+			]
+		},
+		{
+			"name": "🌐 Public - Languages",
+			"item": [
+				{
+					"name": "Get Active Languages",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/blogs/active",
+							"raw": "{{baseUrl}}/languages",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"blogs",
-								"active"
+								"languages"
 							]
 						},
-						"description": "Obtener solo los blogs activos"
+						"description": "Obtener solo los idiomas activos - Acceso público"
+					}
+				},
+				{
+					"name": "Get Language by Code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/languages/{{languageCode}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"languages",
+								"{{languageCode}}"
+							]
+						},
+						"description": "Obtener un idioma por su código - Acceso público"
+					}
+				}
+			]
+		},
+		{
+			"name": "📰 Admin - Blogs Management",
+			"item": [
+				{
+					"name": "Get All Blogs (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/blogs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"blogs"
+							]
+						},
+						"description": "Obtener todos los blogs (incluyendo inactivos) - Solo Admin"
 					}
 				},
 				{
@@ -803,19 +875,20 @@
 							"raw": "{\n  \"title\": \"My Technology Blog\",\n  \"description\": \"A blog about the latest technology trends and developments\",\n  \"ownerId\": \"{{userId}}\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/blogs",
+							"raw": "{{baseUrl}}/admin/blogs",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"blogs"
 							]
 						},
-						"description": "Crear un nuevo blog"
+						"description": "Crear un nuevo blog - Solo Admin"
 					}
 				},
 				{
-					"name": "Get Blog by ID",
+					"name": "Get Blog by ID (Admin)",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -830,16 +903,47 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/blogs/{{blogId}}",
+							"raw": "{{baseUrl}}/admin/blogs/{{blogId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"blogs",
 								"{{blogId}}"
 							]
 						},
-						"description": "Obtener un blog específico por su ID"
+						"description": "Obtener un blog específico por su ID - Solo Admin"
+					}
+				},
+				{
+					"name": "Get Blog by Slug (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/blogs/slug/{{blogSlug}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"blogs",
+								"slug",
+								"{{blogSlug}}"
+							]
+						},
+						"description": "Obtener un blog por su slug - Solo Admin"
 					}
 				},
 				{
@@ -867,16 +971,17 @@
 							"raw": "{\n  \"title\": \"My Updated Technology Blog\",\n  \"description\": \"An updated description for my technology blog\",\n  \"isActive\": true\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/blogs/{{blogId}}",
+							"raw": "{{baseUrl}}/admin/blogs/{{blogId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
+								"admin",
 								"blogs",
 								"{{blogId}}"
 							]
 						},
-						"description": "Actualizar un blog existente"
+						"description": "Actualizar un blog existente - Solo Admin"
 					}
 				},
 				{
@@ -895,16 +1000,57 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/blogs/{{blogId}}",
+							"raw": "{{baseUrl}}/admin/blogs/{{blogId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"blogs",
+								"{{blogId}}"
+							]
+						},
+						"description": "Eliminar un blog - Solo Admin"
+					}
+				}
+			]
+		},
+		{
+			"name": "📰 Public - Blogs",
+			"item": [
+				{
+					"name": "Get Active Blogs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/blogs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"blogs"
+							]
+						},
+						"description": "Obtener solo los blogs activos - Acceso público"
+					}
+				},
+				{
+					"name": "Get Blog by Slug (Public)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/blogs/{{blogSlug}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"blogs",
-								"{{blogId}}"
+								"{{blogSlug}}"
 							]
 						},
-						"description": "Eliminar un blog (soft delete)"
+						"description": "Obtener un blog activo por su slug - Acceso público"
 					}
 				}
 			]

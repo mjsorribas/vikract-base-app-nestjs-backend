@@ -36,6 +36,9 @@ export class CreateCarouselDto {
   articleId?: string;
 
   @IsOptional()
+  pageId?: string;
+
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateCarouselSlideDto)

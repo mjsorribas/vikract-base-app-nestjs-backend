@@ -7,13 +7,16 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
+import { JwtAuthGuard } from '../auths/jwt-auth.guard';
 
-@Controller('blogs')
-export class BlogsController {
+@Controller('admin/blogs')
+@UseGuards(JwtAuthGuard)
+export class BlogsAdminController {
   constructor(private readonly blogsService: BlogsService) {}
 
   @Post()
@@ -26,19 +29,14 @@ export class BlogsController {
     return this.blogsService.findAll();
   }
 
-  @Get('active')
-  findActive() {
-    return this.blogsService.findActive();
+  @Get(':id')
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.blogsService.findOne(id);
   }
 
   @Get('slug/:slug')
   findBySlug(@Param('slug') slug: string) {
     return this.blogsService.findBySlug(slug);
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.blogsService.findOne(id);
   }
 
   @Patch(':id')

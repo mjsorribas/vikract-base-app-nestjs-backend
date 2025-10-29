@@ -8,13 +8,16 @@ import {
   Delete,
   ParseUUIDPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
+import { JwtAuthGuard } from '../auths/jwt-auth.guard';
 
-@Controller('tags')
-export class TagsController {
+@Controller('admin/tags')
+@UseGuards(JwtAuthGuard)
+export class TagsAdminController {
   constructor(private readonly tagsService: TagsService) {}
 
   @Post()
@@ -27,9 +30,9 @@ export class TagsController {
     return this.tagsService.findAll(languageCode);
   }
 
-  @Get('active')
-  findActive(@Query('lang') languageCode?: string) {
-    return this.tagsService.findActive(languageCode);
+  @Get(':id')
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.tagsService.findOne(id);
   }
 
   @Get('slug/:slug')
@@ -38,11 +41,6 @@ export class TagsController {
     @Query('lang') languageCode?: string,
   ) {
     return this.tagsService.findBySlug(slug, languageCode);
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.tagsService.findOne(id);
   }
 
   @Patch(':id')

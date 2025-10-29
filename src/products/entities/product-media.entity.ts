@@ -21,8 +21,8 @@ export class ProductMedia {
   id: string;
 
   @Column({
-    type: 'enum',
-    enum: MediaType,
+    type: 'varchar',
+    length: 20,
   })
   @IsIn(Object.values(MediaType))
   type: MediaType;

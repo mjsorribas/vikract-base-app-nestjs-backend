@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Carousel } from './entities/carousel.entity';
 import { CarouselSlide } from './entities/carousel-slide.entity';
 import { Article } from '../articles/entities/article.entity';
+import { Page } from '../pages/entities/page.entity';
 import { CreateCarouselDto } from './dto/create-carousel.dto';
 import { UpdateCarouselDto } from './dto/update-carousel.dto';
 
@@ -16,6 +17,8 @@ export class CarouselsService {
     private readonly carouselSlideRepository: Repository<CarouselSlide>,
     @InjectRepository(Article)
     private readonly articleRepository: Repository<Article>,
+    @InjectRepository(Page)
+    private readonly pageRepository: Repository<Page>,
   ) {}
 
   async create(createCarouselDto: CreateCarouselDto): Promise<Carousel> {
@@ -39,6 +42,19 @@ export class CarouselsService {
         );
       }
       carousel.article = article;
+    }
+
+    // Si se proporciona un pageId, asociar el carousel a la página
+    if (createCarouselDto.pageId) {
+      const page = await this.pageRepository.findOne({
+        where: { id: createCarouselDto.pageId },
+      });
+      if (!page) {
+        throw new NotFoundException(
+          `Page with ID ${createCarouselDto.pageId} not found`,
+        );
+      }
+      carousel.page = page;
     }
 
     const savedCarousel = await this.carouselRepository.save(carousel);
@@ -98,10 +114,23 @@ export class CarouselsService {
     });
   }
 
+  async findByPage(pageId: string): Promise<Carousel[]> {
+    return this.carouselRepository.find({
+      where: { page: { id: pageId }, isActive: true },
+      relations: ['slides'],
+      order: {
+        createdAt: 'DESC',
+        slides: {
+          order: 'ASC',
+        },
+      },
+    });
+  }
+
   async findOne(id: string): Promise<Carousel> {
     const carousel = await this.carouselRepository.findOne({
       where: { id },
-      relations: ['slides', 'article'],
+      relations: ['slides', 'article', 'page'],
       order: {
         slides: {
           order: 'ASC',

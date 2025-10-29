@@ -36,14 +36,14 @@ export class File {
   mimeType: string;
 
   @Column({
-    type: 'enum',
-    enum: FileType,
+    type: 'varchar',
+    length: 20,
   })
   type: FileType;
 
   @Column({
-    type: 'enum',
-    enum: FileFormat,
+    type: 'varchar',
+    length: 20,
   })
   format: FileFormat;
 

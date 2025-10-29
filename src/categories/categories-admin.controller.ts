@@ -8,13 +8,16 @@ import {
   Delete,
   ParseUUIDPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { JwtAuthGuard } from '../auths/jwt-auth.guard';
 
-@Controller('categories')
-export class CategoriesController {
+@Controller('admin/categories')
+@UseGuards(JwtAuthGuard)
+export class CategoriesAdminController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
@@ -27,9 +30,9 @@ export class CategoriesController {
     return this.categoriesService.findAll(languageCode);
   }
 
-  @Get('active')
-  findActive(@Query('lang') languageCode?: string) {
-    return this.categoriesService.findActive(languageCode);
+  @Get(':id')
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return this.categoriesService.findOne(id);
   }
 
   @Get('slug/:slug')
@@ -38,11 +41,6 @@ export class CategoriesController {
     @Query('lang') languageCode?: string,
   ) {
     return this.categoriesService.findBySlug(slug, languageCode);
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.categoriesService.findOne(id);
   }
 
   @Patch(':id')
